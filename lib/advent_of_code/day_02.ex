@@ -16,14 +16,12 @@ defmodule AdventOfCode.Day02 do
   """
   def part1(args, replacements \\ %{})
 
-  def part1(args, replacements) when is_tuple(args) do
-    args
-    |> augment_with_replacements(replacements)
-    |> part1(0, %{})
+  def part1(rom, replacements) when is_tuple(rom) do
+    step(0, {rom, replacements})
   end
 
-  def part1(args, replacements) when is_list(args) do
-    args
+  def part1(rom, replacements) when is_list(rom) do
+    rom
     |> List.to_tuple()
     |> part1(replacements)
   end
@@ -38,58 +36,51 @@ defmodule AdventOfCode.Day02 do
     |> part1(replacements)
   end
 
-  def part1(rom, pc, ram) do
-    case at(pc, rom, ram) do
+  def step(pc, memory) do
+    case at(pc, memory) do
       99 ->
-        combine(rom, ram)
+        combine(memory)
 
       1 ->
-        part1(
-          rom,
+        step(
           pc + 4,
-          Map.put(
-            ram,
-            at(pc + 3, rom, ram),
-            at(at(pc + 1, rom, ram), rom, ram) + at(at(pc + 2, rom, ram), rom, ram)
+          store(
+            memory,
+            at(pc + 3, memory),
+            at(at(pc + 1, memory), memory) + at(at(pc + 2, memory), memory)
           )
         )
 
       2 ->
-        part1(
-          rom,
+        step(
           pc + 4,
-          Map.put(
-            ram,
-            at(pc + 3, rom, ram),
-            at(at(pc + 1, rom, ram), rom, ram) * at(at(pc + 2, rom, ram), rom, ram)
+          store(
+            memory,
+            at(pc + 3, memory),
+            at(at(pc + 1, memory), memory) * at(at(pc + 2, memory), memory)
           )
         )
     end
   end
 
-  def augment_with_replacements(tuple, mapping) do
-    mapping
-    |> Enum.reduce(tuple, fn {pos, val}, acc ->
-      acc
-      |> Tuple.insert_at(pos, val)
-      |> Tuple.delete_at(pos + 1)
-    end)
+  defp store({rom, ram}, addr, value) do
+    {rom, Map.put(ram, addr, value)}
   end
 
-  defp at(addr, rom, ram) do
+  defp at(addr, {rom, ram}) do
     Map.get_lazy(ram, addr, fn ->
       if addr < tuple_size(rom), do: elem(rom, addr), else: 0
     end)
   end
 
-  defp combine(rom, ram) do
+  defp combine({rom, ram} = memory) do
     max_addr =
       Enum.max([
         tuple_size(rom),
         Enum.max(Map.keys(ram)) + 1
       ])
 
-    for i <- 0..(max_addr - 1), do: at(i, rom, ram)
+    for i <- 0..(max_addr - 1), do: at(i, memory)
   end
 
   @doc """
