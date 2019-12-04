@@ -39,25 +39,25 @@ defmodule AdventOfCode.Day02 do
   def step(pc, memory) do
     case at(pc, memory) do
       99 ->
-        combine(memory)
+        output_memory(memory)
 
       1 ->
         step(
           pc + 4,
-          store(
+          store_indirect(
             memory,
-            at(pc + 3, memory),
-            at(at(pc + 1, memory), memory) + at(at(pc + 2, memory), memory)
+            pc + 3,
+            at_indirect(pc + 1, memory) + at_indirect(pc + 2, memory)
           )
         )
 
       2 ->
         step(
           pc + 4,
-          store(
+          store_indirect(
             memory,
-            at(pc + 3, memory),
-            at(at(pc + 1, memory), memory) * at(at(pc + 2, memory), memory)
+            pc + 3,
+            at_indirect(pc + 1, memory) * at_indirect(pc + 2, memory)
           )
         )
     end
@@ -67,13 +67,19 @@ defmodule AdventOfCode.Day02 do
     {rom, Map.put(ram, addr, value)}
   end
 
+  defp store_indirect(memory, addr, value) do
+    store(memory, at(addr, memory), value)
+  end
+
   defp at(addr, {rom, ram}) do
     Map.get_lazy(ram, addr, fn ->
       if addr < tuple_size(rom), do: elem(rom, addr), else: 0
     end)
   end
 
-  defp combine({rom, ram} = memory) do
+  defp at_indirect(addr, memory), do: at(at(addr, memory), memory)
+
+  defp output_memory({rom, ram} = memory) do
     max_addr =
       Enum.max([
         tuple_size(rom),
