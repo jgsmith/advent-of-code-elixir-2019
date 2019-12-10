@@ -136,29 +136,12 @@ defmodule AdventOfCode.Day07 do
     end
   end
 
-  # def run_machines({:wait, a}, %IntCode{} = b, c, d, e) do
-  #   run_machines(IntCode.run(IntCode.provide(b, IntCode.retrieve(a))), c, d, e, a)
-  # end
-  #
-  # def run_machines({:done, {_, [a_value | _]}} = a, {:wait, b}, c, d, e) do
-  #   run_machines(IntCode.run(IntCode.provide(b, a_value)), c, d, e, a)
-  # end
-  #
-  # def run_machines({:done, {_, [a_value | _]}} = a, %IntCode{} = b, c, d, e) do
-  #   run_machines(IntCode.run(IntCode.provide(b, a_value)), c, d, e, a)
-  # end
-  #
-  # def run_machines({:done, a}, {:done, b}, {:done, c}, {:done, d}, {:done, e}) do
-  #   {:done, a}
-  # end
-
   @doc """
   ## Examples
 
     iex> Day07.permutations([1,2])
     [[1,2], [2,1]]
   """
-  # def permutations([]), do: []
   def permutations([]), do: []
   def permutations([x]), do: [[x]]
 
