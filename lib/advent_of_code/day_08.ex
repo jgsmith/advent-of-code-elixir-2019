@@ -9,8 +9,8 @@ defmodule AdventOfCode.Day08 do
     raw
     |> raw_to_layers(opts)
     |> Enum.map(&calculate_indices/1)
-    |> Enum.sort
-    |> List.first
+    |> Enum.sort()
+    |> List.first()
   end
 
   def part1() do
@@ -32,7 +32,7 @@ defmodule AdventOfCode.Day08 do
     raw
     |> raw_to_layers(opts)
     |> Enum.reduce(&combine_layers/2)
-    |> IO.inspect
+    |> IO.inspect()
     |> Enum.chunk_every(width)
   end
 
@@ -50,7 +50,7 @@ defmodule AdventOfCode.Day08 do
     # we have width*height digits in each layer
     # so we split raw on that
     raw
-    |> String.to_charlist
+    |> String.to_charlist()
     |> Enum.chunk_every(width * height)
   end
 

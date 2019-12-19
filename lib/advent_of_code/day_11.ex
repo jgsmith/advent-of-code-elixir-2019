@@ -11,7 +11,7 @@ defmodule AdventOfCode.Day11 do
 
   def part1(code, given_hull) when is_list(code) do
     code
-    |> List.to_tuple
+    |> List.to_tuple()
     |> part1(given_hull)
   end
 
@@ -29,7 +29,7 @@ defmodule AdventOfCode.Day11 do
     part1("./data/day11.part1.txt")
   end
 
-  def part2(code, given_hull \\ %{{0,0} => 1}) when is_tuple(code) do
+  def part2(code, given_hull \\ %{{0, 0} => 1}) when is_tuple(code) do
     code
     |> paint_hull(given_hull)
     |> to_pgm()
@@ -37,7 +37,7 @@ defmodule AdventOfCode.Day11 do
 
   def part2(code, given_hull) when is_list(code) do
     code
-    |> List.to_tuple
+    |> List.to_tuple()
     |> part2(given_hull)
   end
 
@@ -52,7 +52,7 @@ defmodule AdventOfCode.Day11 do
   end
 
   def part2() do
-    part2("./data/day11.part1.txt", %{{0,0} => 1})
+    part2("./data/day11.part1.txt", %{{0, 0} => 1})
   end
 
   def paint_hull(code, hull \\ %{}) do
@@ -61,12 +61,15 @@ defmodule AdventOfCode.Day11 do
   end
 
   def run_robot(%{brain: brain} = robot, hull) do
-    result = brain
+    result =
+      brain
       |> IntCode.provide(camera(robot, hull))
-      |> IntCode.run
+      |> IntCode.run()
 
     case result do
-      {:done, _} -> hull
+      {:done, _} ->
+        hull
+
       {:wait, new_brain} ->
         [new_color, new_direction] = IntCode.retrieve(new_brain, 2)
 
@@ -130,9 +133,10 @@ defmodule AdventOfCode.Day11 do
   end
 
   def hull_extents(hull) do
-    {xs, ys} = hull
-    |> Map.keys
-    |> Enum.unzip
+    {xs, ys} =
+      hull
+      |> Map.keys()
+      |> Enum.unzip()
 
     {Enum.min_max(xs), Enum.min_max(ys)}
   end

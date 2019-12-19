@@ -2,9 +2,10 @@ defmodule AdventOfCode.Day05 do
   alias AdventOfCode.IntCode
 
   def part1(args) when is_tuple(args) do
-    {:done, results} = args
-    |> IntCode.new([1])
-    |> IntCode.run
+    {:done, results} =
+      args
+      |> IntCode.new([1])
+      |> IntCode.run()
 
     results
   end
@@ -26,9 +27,10 @@ defmodule AdventOfCode.Day05 do
   end
 
   def part2(args) when is_tuple(args) do
-    {:done, results} = args
+    {:done, results} =
+      args
       |> IntCode.new([5])
-      |> IntCode.run
+      |> IntCode.run()
 
     results
   end

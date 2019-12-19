@@ -254,7 +254,7 @@ defmodule AdventOfCode.IntCode do
   def retrieve(%{stdout: stdout}, count) do
     stdout
     |> Enum.slice(0, count)
-    |> Enum.reverse
+    |> Enum.reverse()
   end
 
   @spec output_memory(t) :: {[integer], [integer]}

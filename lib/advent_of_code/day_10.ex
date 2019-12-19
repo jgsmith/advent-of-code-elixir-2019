@@ -36,14 +36,16 @@ defmodule AdventOfCode.Day10 do
 
     coords
     |> Enum.map(fn {x, y} ->
-        {
-          visible_count(coords, x, y) - 1, # we don't count the origin
-          x, y
-        }
+      {
+        # we don't count the origin
+        visible_count(coords, x, y) - 1,
+        x,
+        y
+      }
     end)
-    |> Enum.sort
-    |> Enum.reverse
-    |> List.first
+    |> Enum.sort()
+    |> Enum.reverse()
+    |> List.first()
   end
 
   def part1() do
@@ -83,6 +85,7 @@ defmodule AdventOfCode.Day10 do
     {_, cx, cy} = part1(map)
 
     coords = asteroid_coords(map)
+
     coords
     |> Enum.reject(fn
       {^cx, ^cy} -> true
@@ -96,7 +99,7 @@ defmodule AdventOfCode.Day10 do
       [{_, {my, mx}, _, _} | _] = r_list
       {positive_theta(my, mx), Enum.sort(Enum.map(r_list, fn {_, _, r, p} -> {r, p} end))}
     end)
-    |> Enum.sort
+    |> Enum.sort()
     |> find_asteroid(200)
   end
 
@@ -119,6 +122,7 @@ defmodule AdventOfCode.Day10 do
 
   def positive_theta(y, x) do
     theta = 90 - 180.0 * :math.atan2(-y, x) / :math.pi()
+
     cond do
       theta < 0.0 -> theta + 360.0
       theta >= 360.0 -> theta - 360.0
@@ -144,11 +148,11 @@ defmodule AdventOfCode.Day10 do
 
   def asteroid_coords("", _, _, acc), do: acc
 
-  def asteroid_coords(<< "#", rest::binary >>, x, y, acc) do
+  def asteroid_coords(<<"#", rest::binary>>, x, y, acc) do
     asteroid_coords(rest, x + 1, y, [{x, y} | acc])
   end
 
-  def asteroid_coords(<< _, rest::binary>>, x, y, acc) do
+  def asteroid_coords(<<_, rest::binary>>, x, y, acc) do
     asteroid_coords(rest, x + 1, y, acc)
   end
 
@@ -157,8 +161,8 @@ defmodule AdventOfCode.Day10 do
     |> Enum.map(fn
       {ax, ay} -> normalize(ay - y, ax - x)
     end)
-    |> Enum.uniq
-    |> Enum.count
+    |> Enum.uniq()
+    |> Enum.count()
   end
 
   def normalize(0, 0), do: {0, 0}
@@ -169,7 +173,7 @@ defmodule AdventOfCode.Day10 do
   end
 
   def gcd(a, 0), do: abs(a)
-   def gcd(0, b), do: abs(b)
-   def gcd(a, b) when a < 0 or b < 0, do: gcd(abs(a), abs(b))
-   def gcd(a, b), do: gcd(b, rem(a,b))
+  def gcd(0, b), do: abs(b)
+  def gcd(a, b) when a < 0 or b < 0, do: gcd(abs(a), abs(b))
+  def gcd(a, b), do: gcd(b, rem(a, b))
 end

@@ -19,11 +19,12 @@ defmodule AdventOfCode.Day02 do
   def part1(args, replacements \\ %{})
 
   def part1(rom, replacements) when is_tuple(rom) do
-    {:done, {memory, _}} = replacements
-    |> Enum.reduce(IntCode.new(rom), fn {addr, value}, machine ->
-      IntCode.set(machine, addr, value)
-    end)
-    |> IntCode.run
+    {:done, {memory, _}} =
+      replacements
+      |> Enum.reduce(IntCode.new(rom), fn {addr, value}, machine ->
+        IntCode.set(machine, addr, value)
+      end)
+      |> IntCode.run()
 
     memory
   end
