@@ -1,4 +1,6 @@
 defmodule AdventOfCode.Day02 do
+  alias AdventOfCode.IntCode
+
   @doc """
   ## Example
 
@@ -17,7 +19,13 @@ defmodule AdventOfCode.Day02 do
   def part1(args, replacements \\ %{})
 
   def part1(rom, replacements) when is_tuple(rom) do
-    step(0, {rom, replacements})
+    {:done, {memory, _}} = replacements
+    |> Enum.reduce(IntCode.new(rom), fn {addr, value}, machine ->
+      IntCode.set(machine, addr, value)
+    end)
+    |> IntCode.run
+
+    memory
   end
 
   def part1(rom, replacements) when is_list(rom) do
@@ -34,59 +42,6 @@ defmodule AdventOfCode.Day02 do
     |> Enum.reject(fn s -> Regex.match?(~r/^\s*$/, s) end)
     |> Enum.map(&String.to_integer/1)
     |> part1(replacements)
-  end
-
-  def step(pc, memory) do
-    case at(pc, memory) do
-      99 ->
-        output_memory(memory)
-
-      1 ->
-        step(
-          pc + 4,
-          store_indirect(
-            memory,
-            pc + 3,
-            at_indirect(pc + 1, memory) + at_indirect(pc + 2, memory)
-          )
-        )
-
-      2 ->
-        step(
-          pc + 4,
-          store_indirect(
-            memory,
-            pc + 3,
-            at_indirect(pc + 1, memory) * at_indirect(pc + 2, memory)
-          )
-        )
-    end
-  end
-
-  defp store({rom, ram}, addr, value) do
-    {rom, Map.put(ram, addr, value)}
-  end
-
-  defp store_indirect(memory, addr, value) do
-    store(memory, at(addr, memory), value)
-  end
-
-  defp at(addr, {rom, ram}) do
-    Map.get_lazy(ram, addr, fn ->
-      if addr < tuple_size(rom), do: elem(rom, addr), else: 0
-    end)
-  end
-
-  defp at_indirect(addr, memory), do: at(at(addr, memory), memory)
-
-  defp output_memory({rom, ram} = memory) do
-    max_addr =
-      Enum.max([
-        tuple_size(rom),
-        Enum.max(Map.keys(ram)) + 1
-      ])
-
-    for i <- 0..(max_addr - 1), do: at(i, memory)
   end
 
   @doc """

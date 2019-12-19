@@ -4,7 +4,7 @@ defmodule AdventOfCode.Day09 do
   def part1(args) when is_tuple(args) do
     args
     |> IntCode.new([1])
-    |> IntCode.step()
+    |> IntCode.run()
     |> IO.inspect()
   end
 
@@ -12,10 +12,6 @@ defmodule AdventOfCode.Day09 do
     args
     |> List.to_tuple()
     |> part1
-  end
-
-  def part1() do
-    part1("./data/day09.part1.txt")
   end
 
   def part1(filename) when is_binary(filename) do
@@ -28,10 +24,14 @@ defmodule AdventOfCode.Day09 do
     |> part1()
   end
 
+  def part1() do
+    part1("./data/day09.part1.txt")
+  end
+
   def part2(args) when is_tuple(args) do
     args
     |> IntCode.new([2])
-    |> IntCode.step()
+    |> IntCode.run()
     |> IO.inspect()
   end
 
@@ -39,10 +39,6 @@ defmodule AdventOfCode.Day09 do
     args
     |> List.to_tuple()
     |> part2
-  end
-
-  def part2() do
-    part2("./data/day09.part1.txt")
   end
 
   def part2(filename) when is_binary(filename) do
@@ -53,5 +49,9 @@ defmodule AdventOfCode.Day09 do
     |> Enum.reject(fn s -> Regex.match?(~r/^\s*$/, s) end)
     |> Enum.map(&String.to_integer/1)
     |> part2()
+  end
+
+  def part2() do
+    part2("./data/day09.part1.txt")
   end
 end

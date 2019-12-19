@@ -171,6 +171,8 @@ defmodule AdventOfCode.IntCode do
   end
 
   def set(machine, :pc, value), do: %{machine | pc: value}
+  def set(machine, addr, value) when is_number(addr), do: store(machine, addr, 1, value)
+
   def write(%{stdout: stdout} = machine, value), do: %{machine | stdout: [value | stdout]}
 
   def read(%{stdin: []} = machine), do: :wait
