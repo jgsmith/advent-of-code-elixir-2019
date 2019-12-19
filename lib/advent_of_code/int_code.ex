@@ -250,6 +250,13 @@ defmodule AdventOfCode.IntCode do
   @spec retrieve(t) :: integer
   def retrieve(%{stdout: [value | _]}), do: value
 
+  @spec retrieve(t, integer) :: [integer]
+  def retrieve(%{stdout: stdout}, count) do
+    stdout
+    |> Enum.slice(0, count)
+    |> Enum.reverse
+  end
+
   @spec output_memory(t) :: {[integer], [integer]}
   defp output_memory(%{rom: rom, ram: ram, stdout: stdout} = machine) do
     top = max_addr(rom, ram)

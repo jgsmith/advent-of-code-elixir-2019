@@ -1,21 +1,7 @@
 defmodule AdventOfCode.Day11Test do
   use ExUnit.Case
 
-  import AdventOfCode.Day11
+  alias AdventOfCode.Day11
 
-  @tag :skip
-  test "part1" do
-    input = nil
-    result = part1(input)
-
-    assert result
-  end
-
-  @tag :skip
-  test "part2" do
-    input = nil
-    result = part2(input)
-
-    assert result
-  end
+  doctest AdventOfCode.Day11
 end
