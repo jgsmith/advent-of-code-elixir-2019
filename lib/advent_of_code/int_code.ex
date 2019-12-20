@@ -257,6 +257,10 @@ defmodule AdventOfCode.IntCode do
     |> Enum.reverse()
   end
 
+  def retrieve_and_clear(%{stdout: stdout} = machine) do
+    {Enum.reverse(stdout), %{machine | stdout: []}}
+  end
+
   @spec output_memory(t) :: {[integer], [integer]}
   defp output_memory(%{rom: rom, ram: ram, stdout: stdout} = machine) do
     top = max_addr(rom, ram)
@@ -276,6 +280,9 @@ defmodule AdventOfCode.IntCode do
       ]) - 1
     end
   end
+
+  @spec poke(t, integer, integer) :: t
+  def poke(machine, addr, value), do: store(machine, addr, 1, value)
 
   @spec store(t, integer, mode, integer) :: t
   defp store(machine, addr, 0, value) do
